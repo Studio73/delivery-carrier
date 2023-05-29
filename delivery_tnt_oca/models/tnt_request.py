@@ -455,12 +455,20 @@ class TntRequest(object):
         res = res["consignment"]
         p_data = res["pieceLabelData"]
         c_data = res["consignmentLabelData"]
-        twoDBarcode_text_split = p_data["twoDBarcode"]["#text"].split("|")
+        if not isinstance(p_data, list):
+            p_data = [p_data]
+        p_data_parsed = {"dates": [], "barcodes": [], "options": [], "weights": []}
+        for piece in p_data:
+            twoDBarcode_text_split = piece["twoDBarcode"]["#text"].split("|")
+            p_data_parsed["dates"].append(twoDBarcode_text_split[-2])
+            p_data_parsed["barcodes"].append(piece["barcode"]["#text"])
+            p_data_parsed["options"].append(twoDBarcode_text_split[19])
+            p_data_parsed["weights"].append(piece["weightDisplay"]["@code"])
         c_data_fcd = c_data["freeCirculationDisplay"]
         c_data_dd = c_data["destinationDepot"]
         vals = {
             "tnt_consignment_mumber": c_data["consignmentNumber"],
-            "tnt_consignment_date": twoDBarcode_text_split[-2],
+            "tnt_consignment_date": "|".join(p_data_parsed["dates"]),
             "tnt_consignment_free_circulation": c_data_fcd["#text"],
             "tnt_consignment_sort_split": c_data["sortSplitText"],
             "tnt_consignment_destination_depot": c_data_dd["depotCode"],
@@ -468,10 +476,11 @@ class TntRequest(object):
             "tnt_consignment_cluster_code": c_data["clusterCode"],
             "tnt_consignment_origin_depot": c_data["originDepot"]["depotCode"],
             "tnt_consignment_product": c_data["product"]["#text"],
-            "tnt_consignment_option": twoDBarcode_text_split[19],
+            "tnt_consignment_option": "|".join(p_data_parsed["options"]),
             "tnt_consignment_market": c_data["marketDisplay"]["#text"],
             "tnt_consignment_transport": c_data["transportDisplay"]["#text"],
-            "tnt_piece_barcode": p_data["barcode"]["#text"],
+            "tnt_piece_barcode": "|".join(p_data_parsed["barcodes"]),
+            "tnt_piece_weight": "|".join(p_data_parsed["weights"]),
         }
         if "transitDepots" in c_data and c_data["transitDepots"]:
             transitDepot = c_data["transitDepots"]["transitDepot"]
