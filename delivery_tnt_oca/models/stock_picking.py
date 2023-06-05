@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from odoo import fields, models
 
+from .tnt_request import TntRequest
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
@@ -26,3 +27,8 @@ class StockPicking(models.Model):
     tnt_piece_data = fields.Serialized()
     tnt_piece_barcode = fields.Char(sparse="tnt_piece_data")
     tnt_piece_weight = fields.Char(sparse="tnt_piece_data")
+
+    def get_data_total_shipping_tnt_info(self):
+        self.ensure_one()
+        tnt_request = TntRequest(self.carrier_id, self)
+        return tnt_request._get_data_total_shipping()

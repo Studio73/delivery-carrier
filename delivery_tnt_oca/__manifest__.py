@@ -23,7 +23,7 @@
         "report/picking_templates.xml",
         "report/stock_report_views.xml",
         "report/report_manifest.xml",
-        # "report/report_manifiesto_inter.xml",
+        "report/report_manifest_inter.xml",
     ],
     "installable": True,
     "maintainers": ["victoralmau"],

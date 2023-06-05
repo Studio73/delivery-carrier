@@ -6,12 +6,12 @@
             <div class="row">
                 <div class="col-6">
                     <p class="mb-0"><strong>COLLECTION MANIFEST (SUMMARY)</strong></p>
-                    <p class="mb-0"><span>Sender Account:</span> <span t-field="pick.carrier_id.tnt_oca_ws_account"></span></p>
+                    <p class="mb-0"><span>Sender Account:</span> <t t-field="pick.carrier_id.tnt_oca_ws_account" /></p>
                     <p class="mb-0"><span>Sender Name:</span> <span t-field="pick.company_id.name"></span></p>
                     <p class="mb-0"><span>Address:</span> <span t-field="pick.company_id.street"></span></p>
                 </div>
                 <div class="col-3">
-                    <img src="/delivery_tnt_oca/static/src/img/black_logo.png" style="width: 90%;object-fit: contain;"/>
+                    <img src="/delivery_tnt_oca/static/src/img/black_logo.jpg" style="width: 90%;object-fit: contain;"/>
                 </div>
                 <div class="col-3">
                     <p class="mb-0"><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/></p>
